@@ -30,8 +30,8 @@ public class UserService {
         userDTO.password(),
         Instant.now(),
         null);
-        userRepository.save(user);
-        return user.getId();
+        User savedUser = userRepository.save(user);
+        return savedUser.getId();
     }
 
     public Optional<User> getUserById(String id) {
@@ -43,7 +43,12 @@ public class UserService {
     }
 
     public void deleteById(String id) {
-        userRepository.deleteById(UUID.fromString(id));
+        var userId = UUID.fromString(id);
+
+        var userExists = userRepository.existsById(userId);
+        if (userExists) {
+            userRepository.deleteById(userId);
+        }
     }
 
     public void updateUserById(String id, UpdateUserDTO updateUserDTO) {
