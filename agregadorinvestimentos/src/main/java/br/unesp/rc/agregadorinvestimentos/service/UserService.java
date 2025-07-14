@@ -1,11 +1,13 @@
 package br.unesp.rc.agregadorinvestimentos.service;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import br.unesp.rc.agregadorinvestimentos.controller.UpdateUserDTO;
 import br.unesp.rc.agregadorinvestimentos.controller.UserDTO;
 import br.unesp.rc.agregadorinvestimentos.entity.User;
 import br.unesp.rc.agregadorinvestimentos.repository.UserRepository;
@@ -34,5 +36,31 @@ public class UserService {
 
     public Optional<User> getUserById(String id) {
         return userRepository.findById(UUID.fromString(id));
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public void deleteById(String id) {
+        userRepository.deleteById(UUID.fromString(id));
+    }
+
+    public void updateUserById(String id, UpdateUserDTO updateUserDTO) {
+        var userId = UUID.fromString(id);
+
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isPresent()) {
+            var user = userOptional.get();
+
+            if(updateUserDTO.name() != null) {
+                user.setName(updateUserDTO.name());
+            }
+
+            if(updateUserDTO.password() != null) {
+                user.setPassword(updateUserDTO.password());
+            }
+            userRepository.save(user);
+        }
     }
 }
