@@ -25,8 +25,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import br.unesp.rc.agregadorinvestimentos.controller.UpdateUserDTO;
-import br.unesp.rc.agregadorinvestimentos.controller.UserDTO;
+import br.unesp.rc.agregadorinvestimentos.controller.dto.UpdateUserDTO;
+import br.unesp.rc.agregadorinvestimentos.controller.dto.UserDTO;
 import br.unesp.rc.agregadorinvestimentos.entity.User;
 import br.unesp.rc.agregadorinvestimentos.repository.UserRepository;
 
