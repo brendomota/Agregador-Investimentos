@@ -56,8 +56,15 @@ public class UserService {
     public void deleteById(String id) {
         var userId = UUID.fromString(id);
 
-        var userExists = userRepository.existsById(userId);
-        if (userExists) {
+        Optional<User> userOpt = userRepository.findById(userId);
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            // Remove billingAddress de cada account antes de deletar o usuário
+            if (user.getAccounts() != null) {
+                for (Account account : user.getAccounts()) {
+                    account.setBillingAddress(null);
+                }
+            }
             userRepository.deleteById(userId);
         }
     }
@@ -86,12 +93,20 @@ public class UserService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         var account = new Account(accountDTO.description(), user);
+
+        // Adiciona a conta à lista do usuário apenas se não estiver presente
+        if (!user.getAccounts().contains(account)) {
+            user.getAccounts().add(account);
+        }
+
+        // Primeiro salva a conta para garantir que o accountId seja gerado
         account = accountRepository.save(account);
 
+        // Agora pode criar o BillingAddress usando o account já persistido
         var billingAddress = new BillingAddress(account, accountDTO.street(), accountDTO.number());
-
         account.setBillingAddress(billingAddress);
 
+        // Salva novamente a conta com o billingAddress associado
         accountRepository.save(account);
     }
 

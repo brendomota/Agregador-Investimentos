@@ -2,6 +2,8 @@ package br.unesp.rc.agregadorinvestimentos.entity;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -21,6 +23,7 @@ public class BillingAddress {
     @OneToOne
     @MapsId
     @JoinColumn(name = "account_id")
+    @JsonBackReference
     private Account account;
 
     @Column(name = "street")

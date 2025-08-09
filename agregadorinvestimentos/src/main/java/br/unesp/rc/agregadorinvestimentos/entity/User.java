@@ -7,6 +7,9 @@ import java.util.UUID;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -38,8 +41,9 @@ public class User {
     @UpdateTimestamp
     private Instant updateTimestamp;
 
-    @OneToMany(mappedBy = "user")
-    private List<Account> accounts;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Account> accounts = new java.util.ArrayList<>();
 
     public User() {
     }
