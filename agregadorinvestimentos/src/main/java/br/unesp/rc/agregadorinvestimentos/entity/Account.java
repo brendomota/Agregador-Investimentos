@@ -42,6 +42,7 @@ public class Account {
     private BillingAddress billingAddress;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference // Permite serializar AccountStocks dentro de Account
     private List<AccountStock> accountStocks = new ArrayList<>();
 
     public Account() {

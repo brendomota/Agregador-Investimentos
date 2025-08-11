@@ -1,5 +1,6 @@
 package br.unesp.rc.agregadorinvestimentos.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -18,11 +19,13 @@ public class AccountStock {
     @ManyToOne
     @MapsId("accountId")
     @JoinColumn(name = "account_id")
+    @JsonBackReference // Evita loop ao serializar Account -> AccountStock -> Account
     private Account account;
 
     @ManyToOne
     @MapsId("stockId")
     @JoinColumn(name = "stock_id")
+    @JsonBackReference // Evita loop ao serializar Stock -> AccountStock -> Stock
     private Stock stock;
 
     @Column(name = "quantity")
